@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as semver from 'semver';
 import * as util from 'util';
 import { Project } from 'ts-morph';
-import changes from '../changes-registry';
+import changes from '../../changes-registry';
 
 const readFile = util.promisify(fs.readFile);
 
@@ -24,7 +24,7 @@ export default async function (tree: Tree, schema: any) {
   }
   const activities: Function[] = [];
   for (const currentVersion of Object.keys(changes[schema.package])) {
-    if (semver.lt(existingVersion, currentVersion)) {
+    if (semver.gt(existingVersion, currentVersion)) {
       activities.push(changes[schema.package][currentVersion]);
     }
   }
