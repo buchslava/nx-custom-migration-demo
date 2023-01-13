@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-custom-migration-demo/common-lib": ["libs/common-lib/src/index.ts"]
+      "@nx-custom-migration-demo/common-lib": ["libs/common-lib/src/index.ts"],
+      "@nx-custom-migration-demo/name=foo": ["libs/name=foo/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
