@@ -24,7 +24,7 @@ export default async function (tree: Tree, schema: any) {
   }
   const activities: Function[] = [];
   for (const currentVersion of Object.keys(changes[schema.package])) {
-    if (semver.gt(existingVersion, currentVersion)) {
+    if (semver.gte(existingVersion, currentVersion)) {
       activities.push(changes[schema.package][currentVersion]);
     }
   }
