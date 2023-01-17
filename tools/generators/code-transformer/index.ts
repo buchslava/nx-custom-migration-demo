@@ -1,9 +1,10 @@
 import { Tree } from '@nrwl/devkit';
 import * as fs from 'fs';
+import * as path from 'path';
 import * as semver from 'semver';
 import * as util from 'util';
 import { Project } from 'ts-morph';
-import changes from '../../changes-registry';
+import compile from './compiler';
 
 const readFile = util.promisify(fs.readFile);
 
@@ -18,16 +19,18 @@ export default async function (tree: Tree, schema: any) {
     /^[\D]{1}/,
     ''
   );
-  if (!changes[schema.package]) {
-    console.log(`Changes for "${schema.package}" are missing`);
-    return;
-  }
-  const activities: Function[] = [];
-  for (const currentVersion of Object.keys(changes[schema.package])) {
-    if (semver.gte(existingVersion, currentVersion)) {
-      activities.push(changes[schema.package][currentVersion]);
+
+  const updatesJson: any = JSON.parse(
+    (await readFile('tools/updates/updates.json')).toString()
+  );
+  const activities: string[] = [];
+  for (const record of updatesJson.updates) {
+    if (semver.gte(existingVersion, record.version)) {
+      activities.push(path.resolve(process.cwd(), record.implementation));
     }
   }
+  compile(activities, {});
+
   const project = new Project();
   const sources = [
     'libs/**/*.ts',
@@ -35,8 +38,10 @@ export default async function (tree: Tree, schema: any) {
     'apps/client/**/*.ts',
     'apps/client/**/*.tsx',
   ];
+
   for (const activity of activities) {
-    activity(project, sources);
+    const fn = await require(activity).default;
+    fn(project, sources);
   }
   await project.save();
 }

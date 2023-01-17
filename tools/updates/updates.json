@@ -1,0 +1,11 @@
+{
+    "updates": [
+      {
+        "package": "try-lib",
+        "version": "2.0.0",
+        "description": "Change `deprecatedSum` function name to `sum`",
+        "implementation": "tools/updates/try-lib.2.0.0.fix-deprecated-sum"
+      }
+    ]
+  }
+  

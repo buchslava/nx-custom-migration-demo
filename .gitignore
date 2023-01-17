@@ -17,6 +17,9 @@ node_modules
 .settings/
 *.sublime-workspace
 
+tools/updates/*.js
+tools/updates/*.d.ts
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
