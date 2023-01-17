@@ -40,7 +40,7 @@ export default async function (tree: Tree, schema: any) {
   ];
 
   for (const activity of activities) {
-    const fn = await require(activity).default;
+    const fn = require(activity).default;
     fn(project, sources);
   }
   await project.save();
