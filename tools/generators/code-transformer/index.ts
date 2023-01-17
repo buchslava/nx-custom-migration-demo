@@ -25,7 +25,7 @@ export default async function (tree: Tree, schema: any) {
   );
   const activities: string[] = [];
   for (const record of updatesJson.updates) {
-    if (semver.gte(existingVersion, record.version)) {
+    if (schema.package === record.package && semver.gte(existingVersion, record.version)) {
       activities.push(path.resolve(process.cwd(), record.implementation));
     }
   }
